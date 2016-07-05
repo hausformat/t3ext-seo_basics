@@ -76,7 +76,18 @@ class UrlService {
 				$this->getFrontendController()->MP = $MP;
 				$GLOBALS['TYPO3_CONF_VARS']['FE']['enable_mount_pids'] = 1;
 			}
+		}
 
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['seo_basics']['canonical']['customUrlHook'] )) {
+			$_params = array(
+				'content' => &$content,
+				'conf' => &$conf,
+				'url' => &$url
+			);
+			
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['seo_basics']['canonical']['customUrlHook'] as $_funcRef) {
+				GeneralUtility::callUserFunction($_funcRef, $_params, $this);
+			}
 		}
 
 		if ($url) {
